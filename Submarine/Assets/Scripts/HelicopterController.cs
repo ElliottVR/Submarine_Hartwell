@@ -16,6 +16,8 @@ public class HelicopterController : MonoBehaviour
     private GameObject _submarine; // The submarine instance that's currently attached to the helicopter
     private bool _isSubmarineDropped = false; // A boolean variable to keep track of whether the submarine has been dropped or not
 
+    public DropTarget dropTarget;
+
     void Start()
     {
         // Instantiate the submarine at the bottom of the helicopter and make it a child
@@ -56,6 +58,7 @@ public class HelicopterController : MonoBehaviour
             _submarine.transform.parent = null;
             // Add some rigid body component to the submarine so that it can fall with gravity
             _submarine.AddComponent<Rigidbody>();
+            StartCoroutine(WaitForDrop());
         }
         // Check if the submarine has hit the water
         if (_submarine.transform.position.y <= waterHeight)
@@ -63,6 +66,12 @@ public class HelicopterController : MonoBehaviour
             // Disable the rigid body component so that the submarine stops falling
             _submarine.GetComponent<Rigidbody>().isKinematic = true;
         }
+    }
+
+    IEnumerator WaitForDrop()
+    {
+        yield return new WaitForSeconds(2f);
+        dropTarget.SubmarineDropped();
     }
 }
 

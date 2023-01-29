@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2150008156972179364}
   m_Layer: 0
   m_Name: Submarine
-  m_TagString: Untagged
+  m_TagString: submarine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

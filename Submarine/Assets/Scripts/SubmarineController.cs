@@ -19,6 +19,15 @@ public class SubmarineController : MonoBehaviour
     public float maxDepth = 10f;
     public float minDepth = -10f;
 
+    //Limits to scene bounds
+    public float maxX = 30f;
+    public float minX = -30f;
+    public float maxZ = 30f;
+    public float minZ = -30f;
+
+    //Limit sub from hitting object
+    public float minDistanceToObject = 5f;
+
     //What do you think?
     private float currentDepth;
 
@@ -28,6 +37,9 @@ public class SubmarineController : MonoBehaviour
     bool isMoving;
     public float sliderValue;
 
+    //Sounds
+    public AudioSource collisionBig;
+
     void Update()
     {
         // Slider Value
@@ -36,6 +48,22 @@ public class SubmarineController : MonoBehaviour
         //Movement
         if (Input.GetKey(KeyCode.W))
         {
+            Ray ray = new Ray(transform.position, transform.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, minDistanceToObject))
+            {
+                if (hit.collider != null)
+                {
+                    if (!collisionBig.isPlaying)
+                    {
+                        collisionBig.Play();
+                    }
+                    // stop the submarine's movement
+                    return;
+
+                }
+            }
+
             transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
             isMoving = true;
         }
@@ -65,19 +93,37 @@ public class SubmarineController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime);
-            isMoving = true;
+            //isMoving = true;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
-            isMoving = true;
+            //isMoving = true;
+        }
+
+        //Scene Bounding Logic
+        if (transform.position.x > maxX)
+        {
+            transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
+        }
+        if (transform.position.x < minX)
+        {
+            transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+        }
+        if (transform.position.z > maxZ)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, maxZ);
+        }
+        if (transform.position.z < minZ)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, minZ);
         }
 
         //Fuel
         if (isMoving == true)
         {
-            fuelAmount -= 0.01f;
+            fuelAmount -= 0.002f;
         }
 
         if (fuelAmount < 0)
@@ -95,7 +141,8 @@ public class SubmarineController : MonoBehaviour
             isMoving = false;
         }
 
-        Debug.Log("Fuel Amount: " + fuelAmount);
+
+        //Debug.Log("Fuel Amount: " + fuelAmount);
 
     }
 
