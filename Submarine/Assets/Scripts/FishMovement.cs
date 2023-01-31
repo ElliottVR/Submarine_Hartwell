@@ -20,7 +20,7 @@ public class FishMovement : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime);
         }
 
-        Debug.Log("Fish Distance: " + distance);
+        //Debug.Log("Fish Distance: " + distance);
     }
 
    

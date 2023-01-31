@@ -142,7 +142,7 @@ public class SubmarineController : MonoBehaviour
         }
 
 
-        //Debug.Log("Fuel Amount: " + fuelAmount);
+        Debug.Log("Fuel Amount: " + fuelAmount);
 
     }
 
