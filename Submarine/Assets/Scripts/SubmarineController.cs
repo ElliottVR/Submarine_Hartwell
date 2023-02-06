@@ -64,13 +64,13 @@ public class SubmarineController : MonoBehaviour
                 }
             }
 
-            transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            transform.Translate(transform.forward * moveSpeed * Time.fixedDeltaTime, Space.World);
             isMoving = true;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(-transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            transform.Translate(-transform.forward * moveSpeed * Time.fixedDeltaTime, Space.World);
             isMoving = true;
         }
 
@@ -79,7 +79,7 @@ public class SubmarineController : MonoBehaviour
             isMoving = true;
             currentDepth = transform.position.y;
             if (currentDepth < maxDepth)
-                transform.Translate(Vector3.up * riseSpeed * Time.deltaTime, Space.World);
+                transform.Translate(Vector3.up * riseSpeed * Time.fixedDeltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -87,18 +87,18 @@ public class SubmarineController : MonoBehaviour
             isMoving = true;
             currentDepth = transform.position.y;
             if (currentDepth > minDepth)
-                transform.Translate(Vector3.down * sinkSpeed * Time.deltaTime, Space.World);
+                transform.Translate(Vector3.down * sinkSpeed * Time.fixedDeltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, -rotateSpeed * Time.fixedDeltaTime);
             //isMoving = true;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, rotateSpeed * Time.fixedDeltaTime);
             //isMoving = true;
         }
 
@@ -123,17 +123,17 @@ public class SubmarineController : MonoBehaviour
         //Fuel
         if (isMoving == true)
         {
-            fuelAmount -= 0.002f;
+            fuelAmount -= 2f * Time.fixedDeltaTime;
         }
 
-        if (fuelAmount < 0)
+        if (fuelAmount < 0f)
         {
-            fuelAmount = 0;
+            fuelAmount = 0f;
         }
 
-        if (fuelAmount > 100)
+        if (fuelAmount > 100f)
         {
-            fuelAmount = 100;
+            fuelAmount = 100f;
         }
 
         else
