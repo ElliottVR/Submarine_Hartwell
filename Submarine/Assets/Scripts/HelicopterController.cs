@@ -18,10 +18,12 @@ public class HelicopterController : MonoBehaviour
 
     public DropTarget dropTarget;
 
+    public AudioSource ReleaseSound;
+
     void Start()
     {
         // Instantiate the submarine at the bottom of the helicopter and make it a child
-        _submarine = Instantiate(submarinePrefab, transform.position + new Vector3(0f, -1f, 0f), Quaternion.Euler(0f, 0f, 90f));
+        _submarine = Instantiate(submarinePrefab, transform.position + new Vector3(0.3f, -0.4f, 0f), Quaternion.Euler(0f, 270f, 100f));
         _submarine.transform.parent = transform;
     }
 
@@ -58,6 +60,11 @@ public class HelicopterController : MonoBehaviour
             _submarine.transform.parent = null;
             // Add some rigid body component to the submarine so that it can fall with gravity
             _submarine.AddComponent<Rigidbody>();
+
+            if (!ReleaseSound.isPlaying)
+            {
+                ReleaseSound.Play();
+            }
             StartCoroutine(WaitForDrop());
         }
         // Check if the submarine has hit the water

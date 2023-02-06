@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 47aa48ecc5d98b54bb4f2d2e2f4d5c52
+  - enabled: 1
     path: Assets/Scenes/Helicopter.unity
     guid: 2141b5fa4945f924b82cee18f4453725
   - enabled: 1

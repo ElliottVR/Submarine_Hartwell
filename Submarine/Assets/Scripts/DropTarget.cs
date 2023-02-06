@@ -12,6 +12,7 @@ public class DropTarget : MonoBehaviour
     private bool hit;
     private bool isSubmarineDropped;
 
+
     void Start()
     {
         // Randomize starting position of the target within the given range
