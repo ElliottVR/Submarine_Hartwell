@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class SubmarineController : MonoBehaviour
@@ -39,6 +40,11 @@ public class SubmarineController : MonoBehaviour
 
     //Sounds
     public AudioSource collisionBig;
+
+    void Start()
+    {
+        GameVariables.fuelAmount = 100f;
+    }
 
     void Update()
     {
@@ -136,13 +142,18 @@ public class SubmarineController : MonoBehaviour
             GameVariables.fuelAmount = 100f;
         }
 
+        if (GameVariables.fuelAmount == 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         else
         {
             isMoving = false;
         }
 
 
-        //Debug.Log("Fuel Amount: " + GameVariables.fuelAmount);
+        Debug.Log("Fuel Amount: " + GameVariables.fuelAmount);
 
     }
 
