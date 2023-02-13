@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ClawController : MonoBehaviour
 {
@@ -19,7 +20,19 @@ public class ClawController : MonoBehaviour
     public AudioSource ClawSound;
     public AudioSource dialogueBarrel;
 
-    private void Update()
+    public Text barrelsRemaining;
+    private int barrelsRemainingNumber;
+    private string barrelsRemainingString;
+
+    void Start()
+    {
+        barrelsRemainingNumber = barrelsNeeded - barrelsCollected;
+        barrelsRemainingString = barrelsRemainingNumber.ToString();
+
+        barrelsRemaining.text = barrelsRemainingString;
+    }
+
+    void Update()
     {
         if (canGrab && Input.GetKeyDown(KeyCode.Space))
         {
@@ -40,6 +53,8 @@ public class ClawController : MonoBehaviour
             }
         }
 
+
+
         /*
         else if (canGrab == false && Input.GetKeyDown(KeyCode.Space))
         {
@@ -49,11 +64,11 @@ public class ClawController : MonoBehaviour
         }
         */
 
-        Debug.Log("canGrab = " + canGrab);
+        //Debug.Log("canGrab = " + canGrab);
     }
 
 
-    private void StartClawRetrieveAnim()
+    void StartClawRetrieveAnim()
     {
         //clawRetrieveAnim.Play("Claw Retrieve");
         if (!dialogueBarrel.isPlaying)
@@ -64,16 +79,19 @@ public class ClawController : MonoBehaviour
         StartClawRetractAnim();
     }
 
-    private void StartClawRetractAnim()
+    void StartClawRetractAnim()
     {
+        Destroy(grabbedBarrel);
         canGrab = false;
         barrelInClaw.SetActive(true);
         clawAnim.Play("Claw Retract");
-        StartCoroutine(SoundWait());
-        Destroy(grabbedBarrel);
         barrelsCollected++;
+        Debug.Log("Barrels Collected: " + barrelsCollected);
         GameVariables.barrelsCollectedTotal++;
-       
+        barrelsRemainingNumber = barrelsNeeded - barrelsCollected;
+        barrelsRemainingString = barrelsRemainingNumber.ToString();
+        barrelsRemaining.text = barrelsRemainingString;
+        StartCoroutine(SoundWait());
         if (barrelsCollected >= barrelsNeeded)
         {
             if (SceneManager.GetActiveScene().name == "Submarine1")

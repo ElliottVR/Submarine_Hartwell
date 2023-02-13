@@ -53,10 +53,18 @@ public class HelicopterController : MonoBehaviour
         zInput += Random.Range(-windSpeed, windSpeed);
 
         // Update the helicopter's position based on the input
+        /*
         transform.position = new Vector3(
             Mathf.Clamp(transform.position.x + xInput * speed * Time.fixedDeltaTime, xMin, xMax),
             transform.position.y,
             Mathf.Clamp(transform.position.z + zInput * speed * Time.fixedDeltaTime, zMin, zMax)
+        );
+        */
+
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x + xInput * speed * Time.deltaTime, xMin, xMax),
+            transform.position.y,
+            Mathf.Clamp(transform.position.z + zInput * speed * Time.deltaTime, zMin, zMax)
         );
 
         // Check if the player pressed the "Space" key

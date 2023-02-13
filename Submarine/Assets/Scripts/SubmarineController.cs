@@ -64,13 +64,13 @@ public class SubmarineController : MonoBehaviour
                 }
             }
 
-            transform.Translate(transform.forward * moveSpeed * Time.fixedDeltaTime, Space.World);
+            transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
             isMoving = true;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(-transform.forward * moveSpeed * Time.fixedDeltaTime, Space.World);
+            transform.Translate(-transform.forward * moveSpeed * Time.deltaTime, Space.World);
             isMoving = true;
         }
 
@@ -79,7 +79,7 @@ public class SubmarineController : MonoBehaviour
             isMoving = true;
             currentDepth = transform.position.y;
             if (currentDepth < maxDepth)
-                transform.Translate(Vector3.up * riseSpeed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector3.up * riseSpeed * Time.deltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -87,18 +87,18 @@ public class SubmarineController : MonoBehaviour
             isMoving = true;
             currentDepth = transform.position.y;
             if (currentDepth > minDepth)
-                transform.Translate(Vector3.down * sinkSpeed * Time.fixedDeltaTime, Space.World);
+                transform.Translate(Vector3.down * sinkSpeed * Time.deltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.up, -rotateSpeed * Time.fixedDeltaTime);
+            transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime);
             //isMoving = true;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(Vector3.up, rotateSpeed * Time.fixedDeltaTime);
+            transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
             //isMoving = true;
         }
 
@@ -123,7 +123,7 @@ public class SubmarineController : MonoBehaviour
         //Fuel
         if (isMoving == true)
         {
-            GameVariables.fuelAmount -= 2f * Time.fixedDeltaTime;
+            GameVariables.fuelAmount -= 2f * Time.deltaTime;
         }
 
         if (GameVariables.fuelAmount < 0f)
@@ -142,7 +142,7 @@ public class SubmarineController : MonoBehaviour
         }
 
 
-        Debug.Log("Fuel Amount: " + GameVariables.fuelAmount);
+        //Debug.Log("Fuel Amount: " + GameVariables.fuelAmount);
 
     }
 
