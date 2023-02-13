@@ -11,7 +11,8 @@ public class DropTarget : MonoBehaviour
     public Text missText; // Text to display when the player misses the target
     private bool hit;
     private bool isSubmarineDropped;
-
+    public AudioSource dialogueMiss;
+    public AudioSource dialogueHit;
 
     void Start()
     {
@@ -29,6 +30,10 @@ public class DropTarget : MonoBehaviour
     {
         if (other.CompareTag("submarine"))
         {
+            if (!dialogueHit.isPlaying)
+            {
+                dialogueHit.Play();
+            }
             hit = true;
             hitText.gameObject.SetActive(true);
             hitText.text = "Congratulations, you hit the target!";
@@ -40,6 +45,10 @@ public class DropTarget : MonoBehaviour
     {
         if (!hit && isSubmarineDropped == true)
         {
+            if (!dialogueMiss.isPlaying)
+            {
+                dialogueMiss.Play();
+            }
             missText.gameObject.SetActive(true);
             missText.text = "Try Again!";
             Invoke("ReloadScene", 2f);

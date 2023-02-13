@@ -19,12 +19,19 @@ public class HelicopterController : MonoBehaviour
     public DropTarget dropTarget;
 
     public AudioSource ReleaseSound;
+    public AudioSource dialogueStart;
 
     void Start()
     {
         // Instantiate the submarine at the bottom of the helicopter and make it a child
         _submarine = Instantiate(submarinePrefab, transform.position + new Vector3(0.3f, -0.4f, 0f), Quaternion.Euler(0f, 270f, 100f));
         _submarine.transform.parent = transform;
+
+        if (GameVariables.retryFirstLevel == false)
+        {
+            dialogueStart.Play();
+            GameVariables.retryFirstLevel = true;
+        }
     }
 
     void Update()

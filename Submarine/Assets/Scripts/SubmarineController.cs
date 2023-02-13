@@ -32,7 +32,7 @@ public class SubmarineController : MonoBehaviour
     private float currentDepth;
 
     //Fuel Vars
-    public float fuelAmount = 100.000000f;
+    //public float fuelAmount = 100.000000f;
     public Slider slider;
     bool isMoving;
     public float sliderValue;
@@ -43,7 +43,7 @@ public class SubmarineController : MonoBehaviour
     void Update()
     {
         // Slider Value
-        slider.value = fuelAmount /100;
+        slider.value = GameVariables.fuelAmount /100;
 
         //Movement
         if (Input.GetKey(KeyCode.W))
@@ -123,17 +123,17 @@ public class SubmarineController : MonoBehaviour
         //Fuel
         if (isMoving == true)
         {
-            fuelAmount -= 2f * Time.fixedDeltaTime;
+            GameVariables.fuelAmount -= 2f * Time.fixedDeltaTime;
         }
 
-        if (fuelAmount < 0f)
+        if (GameVariables.fuelAmount < 0f)
         {
-            fuelAmount = 0f;
+            GameVariables.fuelAmount = 0f;
         }
 
-        if (fuelAmount > 100f)
+        if (GameVariables.fuelAmount > 100f)
         {
-            fuelAmount = 100f;
+            GameVariables.fuelAmount = 100f;
         }
 
         else
@@ -142,7 +142,7 @@ public class SubmarineController : MonoBehaviour
         }
 
 
-        Debug.Log("Fuel Amount: " + fuelAmount);
+        Debug.Log("Fuel Amount: " + GameVariables.fuelAmount);
 
     }
 

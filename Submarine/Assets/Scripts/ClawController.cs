@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ClawController : MonoBehaviour
 {
-    public Animation clawRetrieveAnim;
-    public Animation clawRetractAnim;
+    public Animation clawAnim;
+    //public Animation clawRetractAnim;
     public GameObject barrelInClaw;
 
     private bool canGrab = false;
@@ -17,6 +17,7 @@ public class ClawController : MonoBehaviour
     private GameObject grabbedBarrel;
 
     public AudioSource ClawSound;
+    public AudioSource dialogueBarrel;
 
     private void Update()
     {
@@ -39,12 +40,14 @@ public class ClawController : MonoBehaviour
             }
         }
 
+        /*
         else if (canGrab == false && Input.GetKeyDown(KeyCode.Space))
         {
 
             if (!clawRetrieveAnim.isPlaying)
                 clawRetrieveAnim.Play("Claw Retrieve");
         }
+        */
 
         Debug.Log("canGrab = " + canGrab);
     }
@@ -52,17 +55,24 @@ public class ClawController : MonoBehaviour
 
     private void StartClawRetrieveAnim()
     {
-        clawRetrieveAnim.Play("Claw Retrieve");
-        Invoke("StartClawRetractAnim", clawRetrieveAnim.clip.length);
+        //clawRetrieveAnim.Play("Claw Retrieve");
+        if (!dialogueBarrel.isPlaying)
+        {
+            dialogueBarrel.Play();
+        }
+        //Invoke("StartClawRetractAnim", clawRetrieveAnim.clip.length);
+        StartClawRetractAnim();
     }
 
     private void StartClawRetractAnim()
     {
+        canGrab = false;
         barrelInClaw.SetActive(true);
-        clawRetractAnim.Play("Claw Retract");
-        StartCoroutine("SoundWait");
+        clawAnim.Play("Claw Retract");
+        StartCoroutine(SoundWait());
         Destroy(grabbedBarrel);
         barrelsCollected++;
+        GameVariables.barrelsCollectedTotal++;
        
         if (barrelsCollected >= barrelsNeeded)
         {
@@ -77,12 +87,19 @@ public class ClawController : MonoBehaviour
         }
     }
 
-    IEnumerable SoundWait()
+    IEnumerator SoundWait()
     {
-        yield return new WaitForSeconds(2);
-        if (!ClawSound.isPlaying)
-        {
+        yield return new WaitForSeconds(2.0f);
+        //if (!ClawSound.isPlaying)
+        //{
             ClawSound.Play();
-        }
+        //}
+       
+        yield return new WaitForSeconds(4.0f);
+        barrelInClaw.SetActive(false);
+        GameVariables.fuelAmount = 100;
+        clawAnim.Play("Replace");
+        //clawRetrieveAnim.Play("Claw Open");
+
     }
 }
