@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ClawController : MonoBehaviour
 {
     public Animation clawAnim;
-    //public Animation clawRetractAnim;
+
     public GameObject barrelInClaw;
 
     private bool canGrab = false;
@@ -24,6 +24,8 @@ public class ClawController : MonoBehaviour
     private int barrelsRemainingNumber;
     private string barrelsRemainingString;
 
+    private bool barrelIsGrabbed = false;
+
     void Start()
     {
         barrelsRemainingNumber = barrelsNeeded - barrelsCollected;
@@ -34,7 +36,7 @@ public class ClawController : MonoBehaviour
 
     void Update()
     {
-        if (canGrab && Input.GetKeyDown(KeyCode.Space))
+        if (canGrab && barrelIsGrabbed == false && Input.GetKeyDown(KeyCode.Space))
         {
             StartClawRetrieveAnim();
         }
@@ -54,23 +56,13 @@ public class ClawController : MonoBehaviour
         }
 
 
-
-        /*
-        else if (canGrab == false && Input.GetKeyDown(KeyCode.Space))
-        {
-
-            if (!clawRetrieveAnim.isPlaying)
-                clawRetrieveAnim.Play("Claw Retrieve");
-        }
-        */
-
         //Debug.Log("canGrab = " + canGrab);
     }
 
 
     void StartClawRetrieveAnim()
     {
-        //clawRetrieveAnim.Play("Claw Retrieve");
+        barrelIsGrabbed = true;
         if (!dialogueBarrel.isPlaying)
         {
             dialogueBarrel.Play();
@@ -81,6 +73,11 @@ public class ClawController : MonoBehaviour
 
     void StartClawRetractAnim()
     {
+        if (grabbedBarrel != null)
+        {
+            Destroy(grabbedBarrel);
+            grabbedBarrel = null;
+        }
         Destroy(grabbedBarrel);
         canGrab = false;
         barrelInClaw.SetActive(true);
@@ -108,16 +105,14 @@ public class ClawController : MonoBehaviour
     IEnumerator SoundWait()
     {
         yield return new WaitForSeconds(2.0f);
-        //if (!ClawSound.isPlaying)
-        //{
-            ClawSound.Play();
-        //}
+
+        ClawSound.Play();
        
         yield return new WaitForSeconds(4.0f);
+
         barrelInClaw.SetActive(false);
         GameVariables.fuelAmount = 100;
         clawAnim.Play("Replace");
-        //clawRetrieveAnim.Play("Claw Open");
-
+        barrelIsGrabbed = false; // reset the flag when the barrel is destroyed
     }
 }
