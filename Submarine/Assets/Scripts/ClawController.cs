@@ -36,26 +36,35 @@ public class ClawController : MonoBehaviour
 
     void Update()
     {
+
         if (canGrab && barrelIsGrabbed == false && Input.GetKeyDown(KeyCode.Space))
         {
+            if (clawAnim.isPlaying)
+            {
+                return;
+            }
             StartClawRetrieveAnim();
         }
 
+        int layerMask = 1 << LayerMask.NameToLayer("Barrel");
         Ray ray = new Ray(transform.position, -transform.right);
         RaycastHit hit;
         //Debug.DrawRay(transform.position, -transform.right * 10f, Color.green);
-        if (Physics.Raycast(ray, out hit, 5f))
+        if (Physics.Raycast(ray, out hit, 5f, layerMask))
         {
            
-            if (hit.collider.CompareTag("Barrel"))
-            {
+            //if (hit.collider.CompareTag("Barrel") && hit.collider.gameObject != grabbedBarrel)
+            //{
                 canGrab = true;
                 grabbedBarrel = hit.collider.gameObject;
                 Debug.DrawRay(transform.position, -transform.right * 5f, Color.red);
-            }
+            //}
         }
 
-
+        else
+        {
+            canGrab = false;
+        }
         //Debug.Log("canGrab = " + canGrab);
     }
 
@@ -63,6 +72,7 @@ public class ClawController : MonoBehaviour
     void StartClawRetrieveAnim()
     {
         barrelIsGrabbed = true;
+        canGrab = false;
         if (!dialogueBarrel.isPlaying)
         {
             dialogueBarrel.Play();
@@ -73,17 +83,19 @@ public class ClawController : MonoBehaviour
 
     void StartClawRetractAnim()
     {
+        
         if (grabbedBarrel != null)
         {
             Destroy(grabbedBarrel);
             grabbedBarrel = null;
+            canGrab = false;
         }
         Destroy(grabbedBarrel);
         canGrab = false;
         barrelInClaw.SetActive(true);
         clawAnim.Play("Claw Retract");
         barrelsCollected++;
-        Debug.Log("Barrels Collected: " + barrelsCollected);
+        //Debug.Log("Barrels Collected: " + barrelsCollected);
         GameVariables.barrelsCollectedTotal++;
         barrelsRemainingNumber = barrelsNeeded - barrelsCollected;
         barrelsRemainingString = barrelsRemainingNumber.ToString();
@@ -113,6 +125,8 @@ public class ClawController : MonoBehaviour
         barrelInClaw.SetActive(false);
         GameVariables.fuelAmount = 100;
         clawAnim.Play("Replace");
+        //yield return new WaitForSeconds(8.0f);
         barrelIsGrabbed = false; // reset the flag when the barrel is destroyed
+        yield break;
     }
 }
